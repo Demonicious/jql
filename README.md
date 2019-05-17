@@ -1,6 +1,6 @@
 Ever wanted to use JSON as a database in an SQL-Like Environment ? Yeah me neither but still this is a thing..
 
-## 1.) Installation
+## 1.) Installation using NPM
 
 ```
 npm install --save demon-jql
