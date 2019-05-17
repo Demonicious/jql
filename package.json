@@ -1,0 +1,16 @@
+{
+  "name": "demon-jql",
+  "version": "0.0.8",
+  "description": "Unoptimized Module which allows JSON to be used as a database in an SQL-Like environment.",
+  "main": "./src/jql.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "json",
+    "db",
+    "database"
+  ],
+  "author": "Demonicious",
+  "license": "ISC"
+}
