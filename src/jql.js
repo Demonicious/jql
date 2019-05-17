@@ -415,7 +415,7 @@ var database = {
 };
 
 module.exports = {
-    establish: (DatabaseName, DatabasePath) => {
+    newDatabase: (DatabaseName, DatabasePath) => {
         if (!fs.existsSync(DatabasePath)) {
             fs.mkdirSync(DatabasePath);
         }
