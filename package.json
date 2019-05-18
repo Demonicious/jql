@@ -1,7 +1,7 @@
 {
   "name": "demon-jql",
   "version": "0.0.13",
-  "description": "Unoptimized Module which allows JSON to be used as a database in an SQL-Like environment.",
+  "description": "Module which makes using JSON as databases straight-forward.",
   "main": "./src/index.js",
   "keywords": [
     "json",
