@@ -9,10 +9,8 @@ npm install --save demon-jql
 ## 2.) Basic Usage
 
 ```javascript
-const jql = require("demon-jql");
-const db = jql.newDatabase("newDatabase", "./newDatabase"); // Name and Path
-
-// if you wish to use another database, you'd have to use jql.newDatabase() once again
+const { Database } = require("demon-jql");
+const db = new Database("newDatabase", "./newDatabase"); // Name and Path
 ```
 
 ## 3.) Creating a Table
@@ -117,8 +115,8 @@ db.write("users", [
 ## 8.) An Example
 
 ```javascript
-const jql = require("./src/jql.js");
-const db = jql.newDatabase("db2", "./db2");
+const { Database } = require("demon-jql");
+const db = new Database("db2", "./db2");
 
 // Creating a New Table
 // .run() method isn't used here.
@@ -211,6 +209,10 @@ if (data.success) {
 // .run() isn't used here.
 // I removed this table just to show it can be done.
 db.removeTable("someTable");
+
+// Just a simple test method()
+db.test()
+// Returns True if DB is working, otherwise False
 ```
 
 I plan to Make a lot of Optimizations and add more features (making it more sql-like)
