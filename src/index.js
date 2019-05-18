@@ -365,7 +365,7 @@ class Database  {
                                     }
                                 }
                             })
-                            objectDeclareCounter++;
+                            if (readable) objectDeclareCounter++;
                         }
                         let json = JSON.stringify(arr);
                         // fs.writeFileSync(this.path + `\\${this.query.table}.json`, json);
@@ -393,7 +393,7 @@ class Database  {
                                     returnObject[objectDeclareCounter] = arr.rows[i];
                                 }
                             }
-                            objectDeclareCounter++;
+                            if (readable) objectDeclareCounter++;
                         }
                         let json = JSON.stringify(arr);
                         // fs.writeFileSync(this.path + `\\${this.query.table}.json`, json);
