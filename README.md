@@ -181,7 +181,7 @@ var data = db.select("someTable", [
 }).run();
 
 if (data.success) {
-    console.log(data);
+    console.log("Name Fetched From Table:", data[0]["name"]);
 }
 
 // Retrieving Multiple Columns
