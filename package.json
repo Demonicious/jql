@@ -1,6 +1,6 @@
 {
   "name": "demon-jql",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Module which makes using JSON as databases straight-forward.",
   "main": "./src/index.js",
   "keywords": [
