@@ -47,6 +47,9 @@ class Database  {
 
         if (!fs.existsSync(Path)) {
             fs.mkdirSync(Path);
+        } else {
+            console.error("Database Path already in use.");
+            process.exit();
         }
         this.name = `${Name}`;
         this.path = path.join(path.dirname(module.parent.filename),`${Path}`);
