@@ -3,7 +3,7 @@ const path = require("path");
 
 // Utility Functions
 var getNextRowID = (Table, Database) => {
-    let data = fs.readFileSync(Database.path + `\\${Table}.json`, "utf-8");
+    let data = fs.readFileSync(Database.path + `/${Table}.json`, "utf-8");
     let arr = JSON.parse(data)["rows"];
     let number = 0;
     if (arr == undefined) return 0;
@@ -22,7 +22,7 @@ var getNextRowID = (Table, Database) => {
     return number;
 }
 var getRowAmount = (Table, Database) => {
-    let data = fs.readFileSync(Database.path + `\\${Table}.json`, "utf-8");
+    let data = fs.readFileSync(Database.path + `/${Table}.json`, "utf-8");
     let arr = JSON.parse(data)["rows"];
     if (arr == undefined) return 0;
     return arr.length;
@@ -58,7 +58,7 @@ class Database  {
     // Methods
     createTable(Name, Columns) {
         let id = 0;
-        fs.readdirSync(this.path + "\\", (err, files) => {
+        fs.readdirSync(this.path + "/", (err, files) => {
             id = files.length;
         });
 
@@ -89,7 +89,7 @@ class Database  {
             process.exit();
         }
 
-        fs.writeFileSync(this.path + `\\${Name}.json`, JSON.stringify(object), function (err) {
+        fs.writeFileSync(this.path + `/${Name}.json`, JSON.stringify(object), function (err) {
             if (err) {
                 console.error("Table already exists.")
                 process.exit();
@@ -99,7 +99,7 @@ class Database  {
     }
     updateTable(Name, Columns) {
         let id = 0;
-        fs.readdirSync(this.path + "\\", (err, files) => {
+        fs.readdirSync(this.path + "/", (err, files) => {
             id = files.length;
         });
 
@@ -131,8 +131,8 @@ class Database  {
         }
 
         try {
-            if (fs.existsSync(this.path + `\\${Name}.json`)) {
-              fs.writeFileSync(this.path + `\\${Name}.json`, JSON.stringify(object), (err) => {
+            if (fs.existsSync(this.path + `/${Name}.json`)) {
+              fs.writeFileSync(this.path + `/${Name}.json`, JSON.stringify(object), (err) => {
                   if (err) throw err;
               })
               return true;
@@ -209,7 +209,7 @@ class Database  {
     run() {
         if (this.query != null) {
             if (this.query.mode == "write") {
-                let arr = JSON.parse(fs.readFileSync(this.path + `\\${this.query.table}.json`, "utf-8"));
+                let arr = JSON.parse(fs.readFileSync(this.path + `/${this.query.table}.json`, "utf-8"));
                 let columns = [];
                 let object = {};
                 let keys = [];
@@ -219,7 +219,7 @@ class Database  {
                     columnsLength++;
                 });
                 let idCount = 0;
-                // let tableContent = fs.readFileSync(this.path + `\\${this.query.table}.json`, "utf-8");
+                // let tableContent = fs.readFileSync(this.path + `/${this.query.table}.json`, "utf-8");
                 let parsedContent = arr;
                 if (parsedContent.rows == undefined) {
                     parsedContent.rows = [];
@@ -237,13 +237,13 @@ class Database  {
                     parsedContent.rows.push(object);
                     object = {};
                     let tableContent = JSON.stringify(parsedContent);
-                    fs.writeFileSync(this.path + `\\${this.query.table}.json`, tableContent)
+                    fs.writeFileSync(this.path + `/${this.query.table}.json`, tableContent)
                 })
                 this.query = null;
                 return true;
             } else if (this.query.mode == "update") {
                 if (this.query.where == undefined) {
-                    fs.readFile(this.path + `\\${this.query.table}.json`, (err, data) => {
+                    fs.readFile(this.path + `/${this.query.table}.json`, (err, data) => {
                         if (err) { console.error("Table not found."); process.exit(); }
                         let arr = JSON.parse(data);
                         for (var i = 0; i < getRowAmount(this.query.table, this); i++) {
@@ -252,12 +252,12 @@ class Database  {
                             })
                         }
                         let json = JSON.stringify(arr);
-                        fs.writeFileSync(this.path + `\\${this.query.table}.json`, json);
+                        fs.writeFileSync(this.path + `/${this.query.table}.json`, json);
                         this.query = null;
                     })
                     return true;
                 } else if (Object.keys(this.query.where).length != 0) {
-                    let arr = JSON.parse(fs.readFileSync(this.path + `\\${this.query.table}.json`, "utf-8"));
+                    let arr = JSON.parse(fs.readFileSync(this.path + `/${this.query.table}.json`, "utf-8"));
                     let iter = getRowAmount(this.query.table, this);
                     let keys = Object.keys(this.query.where);
                     for (var i = 0; i < iter; i++) {
@@ -274,7 +274,7 @@ class Database  {
                         })
                     }
                     let json = JSON.stringify(arr);
-                    fs.writeFileSync(this.path + `\\${this.query.table}.json`, json);
+                    fs.writeFileSync(this.path + `/${this.query.table}.json`, json);
                     this.query = null;
                     return true;
                 } else {
@@ -284,7 +284,7 @@ class Database  {
             } else if (this.query.mode == "remove") {
                 let keys = Object.keys(this.query.where);
                 if (keys.length != 0) {
-                    let arr = JSON.parse(fs.readFileSync(this.path + `\\${this.query.table}.json`, "utf-8"));
+                    let arr = JSON.parse(fs.readFileSync(this.path + `/${this.query.table}.json`, "utf-8"));
                     let iter = getRowAmount(this.query.table, this);
                     let keys = Object.keys(this.query.where);
                     for (var i = 0; i < iter; i++) {
@@ -301,7 +301,7 @@ class Database  {
                         }
                     }
                     let json = JSON.stringify(arr);
-                    fs.writeFileSync(this.path + `\\${this.query.table}.json`, json);
+                    fs.writeFileSync(this.path + `/${this.query.table}.json`, json);
                     this.query = null;
                 } else {
                     console.error("Invalid Usage of Remove Clause, Where to remove not specified");
@@ -311,7 +311,7 @@ class Database  {
                 if (this.query.where == undefined) {
                     let returnObject = {};
                     if (this.query.dataToSelect != "*") {
-                        let arr = JSON.parse(fs.readFileSync(this.path + `\\${this.query.table}.json`, "utf-8"));
+                        let arr = JSON.parse(fs.readFileSync(this.path + `/${this.query.table}.json`, "utf-8"));
                         for (var i = 0; i < getRowAmount(this.query.table, this); i++) {
                             returnObject[i] = {};
                             this.query.dataToSelect.forEach((element) => {
@@ -327,7 +327,7 @@ class Database  {
                         this.query = null;
                         return returnObject;
                     } else {
-                        let arr = JSON.parse(fs.readFileSync(this.path + `\\${this.query.table}.json`, "utf-8"));
+                        let arr = JSON.parse(fs.readFileSync(this.path + `/${this.query.table}.json`, "utf-8"));
                         for (var i = 0; i < getRowAmount(this.query.table, this); i++) {
                             returnObject[i] = {};
                             arr.rows.forEach((element) => {
@@ -346,7 +346,7 @@ class Database  {
                 } else if (Object.keys(this.query.where).length != 0) {
                     let returnObject = {};
                     if (this.query.dataToSelect != "*") {
-                        let arr = JSON.parse(fs.readFileSync(this.path + `\\${this.query.table}.json`, "utf-8"));
+                        let arr = JSON.parse(fs.readFileSync(this.path + `/${this.query.table}.json`, "utf-8"));
                         let iter = getRowAmount(this.query.table, this);
                         let keys = Object.keys(this.query.where);
                         let objectDeclareCounter = 0;
@@ -368,7 +368,7 @@ class Database  {
                             if (readable) objectDeclareCounter++;
                         }
                         let json = JSON.stringify(arr);
-                        // fs.writeFileSync(this.path + `\\${this.query.table}.json`, json);
+                        // fs.writeFileSync(this.path + `/${this.query.table}.json`, json);
                         this.query = null;
                         if (returnObject[0] != undefined) {
                             returnObject.success = true;
@@ -377,7 +377,7 @@ class Database  {
                         }
                         return returnObject;
                     } else {
-                        let arr = JSON.parse(fs.readFileSync(this.path + `\\${this.query.table}.json`, "utf-8"));
+                        let arr = JSON.parse(fs.readFileSync(this.path + `/${this.query.table}.json`, "utf-8"));
                         let iter = getRowAmount(this.query.table, this);
                         let keys = Object.keys(this.query.where);
                         let objectDeclareCounter = 0;
@@ -396,7 +396,7 @@ class Database  {
                             if (readable) objectDeclareCounter++;
                         }
                         let json = JSON.stringify(arr);
-                        // fs.writeFileSync(this.path + `\\${this.query.table}.json`, json);
+                        // fs.writeFileSync(this.path + `/${this.query.table}.json`, json);
                         this.query = null;
                         if (returnObject[0] != undefined) {
                             returnObject.success = true;
@@ -413,7 +413,7 @@ class Database  {
         }
     }
     removeTable(Table) {
-        fs.unlinkSync(this.path + `\\${Table}.json`);
+        fs.unlinkSync(this.path + `/${Table}.json`);
         return true;
     }
     nextID() {
